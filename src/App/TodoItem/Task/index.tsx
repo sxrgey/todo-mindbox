@@ -2,7 +2,7 @@ import { Checkbox, Typography, Box } from '@mui/material';
 import { useTodoStore } from '../../../store';
 
 const Task = ({ id, text, completed }: { id: string; text: string; completed: boolean }) => {
-  const toggleTodo = useTodoStore((state) => state.toggleTodo);
+  const toggleTodo = useTodoStore((state) => state.toggleTask);
 
   return (
     <Box display='flex' alignItems='center' p={1} borderBottom='1px solid #eee'>

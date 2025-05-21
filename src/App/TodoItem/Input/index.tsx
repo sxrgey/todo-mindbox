@@ -4,7 +4,7 @@ import { useTodoStore } from '../../../store';
 
 const Input = () => {
   const [text, setText] = useState('');
-  const addTodo = useTodoStore((state) => state.addTodo);
+  const addTodo = useTodoStore((state) => state.addTask);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && text.trim()) {

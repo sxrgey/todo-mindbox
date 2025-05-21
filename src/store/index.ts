@@ -1,37 +1,109 @@
 import { create } from 'zustand';
 import { v4 } from 'uuid';
 
-export type Todo = {
+const DEFAULT_TODO: Todo = {
+  id: 'default',
+  name: 'Todos',
+  tasks: [],
+};
+
+export type Task = {
   id: string;
   text: string;
   completed: boolean;
 };
 
+export type Todo = {
+  id: string;
+  name: string;
+  tasks: Task[];
+};
+
 type Filter = 'all' | 'active' | 'completed';
 
 type TodoStore = {
+  activeId: string;
   todos: Todo[];
   filter: Filter;
-  addTodo: (text: string) => void;
-  toggleTodo: (id: string) => void;
+
+  setActiveTodo: (id: string) => void;
+  addTodo: (name: string) => string;
+  addTask: (text: string) => void;
+  toggleTask: (taskId: string) => void;
   clearCompleted: () => void;
   setFilter: (filter: Filter) => void;
 };
 
-export const useTodoStore = create<TodoStore>((set) => ({
-  todos: [],
+export const useTodoStore = create<TodoStore>((set, get) => ({
+  activeId: 'default',
+  todos: [DEFAULT_TODO],
   filter: 'all',
-  addTodo: (text: string) =>
-    set((state: TodoStore) => ({
-      todos: [...state.todos, { id: v4(), text, completed: false }],
-    })),
-  toggleTodo: (id: string) =>
-    set((state: TodoStore) => ({
-      todos: state.todos.map((todo: Todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)),
-    })),
-  clearCompleted: () =>
-    set((state: TodoStore) => ({
-      todos: state.todos.filter((todo: Todo) => !todo.completed),
-    })),
+
+  setActiveTodo: (id: string) => set({ activeId: id }),
+
+  addTodo: (name: string) => {
+    const newTodo: Todo = {
+      id: v4(),
+      name,
+      tasks: [],
+    };
+    set((state) => ({
+      todos: [...state.todos, newTodo],
+      activeId: newTodo.id,
+    }));
+
+    return newTodo.id;
+  },
+
+  addTask: (text: string) => {
+    const { activeId, todos } = get();
+    if (!activeId) return;
+
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === activeId) {
+        const newTask: Task = {
+          id: v4(),
+          text,
+          completed: false,
+        };
+        return {
+          ...todo,
+          tasks: [...todo.tasks, newTask],
+        };
+      }
+      return todo;
+    });
+
+    set({ todos: updatedTodos });
+  },
+
+  toggleTask: (taskId: string) => {
+    const { activeId, todos } = get();
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id !== activeId) return todo;
+
+      return {
+        ...todo,
+        tasks: todo.tasks.map((task) => (task.id === taskId ? { ...task, completed: !task.completed } : task)),
+      };
+    });
+
+    set({ todos: updatedTodos });
+  },
+
+  clearCompleted: () => {
+    const { activeId, todos } = get();
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id !== activeId) return todo;
+
+      return {
+        ...todo,
+        tasks: todo.tasks.filter((task) => !task.completed),
+      };
+    });
+
+    set({ todos: updatedTodos });
+  },
+
   setFilter: (filter: Filter) => set({ filter }),
 }));

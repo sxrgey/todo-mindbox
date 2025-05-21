@@ -2,9 +2,11 @@ import { Box, Button, Typography, Stack } from '@mui/material';
 import { useTodoStore } from '../../../store';
 
 const Footer = () => {
-  const { todos, filter, setFilter, clearCompleted } = useTodoStore((state) => state);
+  const { filter, setFilter, clearCompleted, activeId } = useTodoStore((state) => state);
 
-  const remaining = todos.filter((t) => !t.completed).length;
+  const tasks = useTodoStore((state) => state.todos.find((todo) => todo.id === activeId))?.tasks || [];
+
+  const remaining = tasks.filter((t) => !t.completed).length;
 
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center' p={1}>
