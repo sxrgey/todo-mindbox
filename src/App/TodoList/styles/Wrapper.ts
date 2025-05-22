@@ -1,11 +1,11 @@
 import { Box, styled } from '@mui/material';
 
 const Wrapper = styled(Box)`
-  display: flex;
-  gap: 1rem;
+  max-height: 320px;
+  overflow: auto;
 
   @media (max-width: 600px) {
-    gap: 0.25rem;
+    max-height: 400px;
   }
 `;
 

@@ -6,6 +6,7 @@ import Input from './Input';
 import Container from './styles/Container';
 import Label from './styles/Label';
 import Paper from './styles/Paper';
+import Wrapper from './styles/Wrapper';
 import Task from './Task';
 
 const TodoList = () => {
@@ -27,9 +28,11 @@ const TodoList = () => {
         <Input onToggleClick={onToggleClick} show={showTodos} />
         {showTodos && (
           <>
-            {filteredTodos.map((todo) => (
-              <Task key={todo.id} {...todo} />
-            ))}
+            <Wrapper>
+              {filteredTodos.map((todo) => (
+                <Task key={todo.id} {...todo} />
+              ))}
+            </Wrapper>
             <Footer />
           </>
         )}
