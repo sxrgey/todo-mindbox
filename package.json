@@ -1,5 +1,6 @@
 {
   "name": "todo-mindbox",
+  "homepage": "https://sxrgey.github.io/todo-mindbox",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -28,7 +29,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": []
@@ -54,6 +57,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "gh-pages": "^6.3.0",
     "prettier": "^3.5.3",
     "typescript-eslint": "^8.32.1"
   }
