@@ -1,15 +1,10 @@
-import { create } from 'zustand';
 import { v4 } from 'uuid';
+import { create } from 'zustand';
 
-export type Todo = {
-  id: string;
-  text: string;
-  completed: boolean;
-};
+import { Filter } from '@/common/types/filter';
+import { Todo } from '@/common/types/todo';
 
-type Filter = 'all' | 'active' | 'completed';
-
-type TodoStore = {
+export type TodoStore = {
   todos: Todo[];
   filter: Filter;
   addTodo: (text: string) => void;
